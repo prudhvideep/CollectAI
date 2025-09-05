@@ -14,7 +14,7 @@ export interface Message {
 export interface Intent {
   id: string;
   name: string;
-  type: "Positive" | "Negative" | "Neutral";
+  impact: "positive" | "negative" | "neutral";
   description: string;
   value: number;
 }

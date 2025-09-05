@@ -269,7 +269,7 @@ export class RLAgent {
         return {
           id: "unknown",
           name: result.best_intent.name || "Unknown",
-          type: "Neutral",
+          impact: "neutral",
           description: "Unknown intent",
           value: 0,
           confidence: result.best_intent.confidence || 0
@@ -321,7 +321,7 @@ export class RLAgent {
       bestIntent = {
         id: "unknown",
         name: "Unknown",
-        type: "Neutral",
+        impact: "neutral",
         description: "Could not classify intent",
         value: 0
       };
@@ -343,7 +343,7 @@ export class RLAgent {
       'Neutral': 0.1
     };
 
-    const reward = baseReward[intent.type] || 0;
+    const reward = baseReward[intent.impact] || 0;
 
     // Confidence multiplier
     const confidenceMultiplier = intent.confidence || 0.5;
@@ -352,9 +352,9 @@ export class RLAgent {
     const currentSeverity = this.currentStrategy / (this.strategies.length - 1);
     let strategyBonus = 0;
     
-    if (intent.type === 'Positive' && currentSeverity > 0.6) {
+    if (intent.impact === 'positive' && currentSeverity > 0.6) {
       strategyBonus = -0.2; // Penalty for being too aggressive with positive response
-    } else if (intent.type === 'Negative' && currentSeverity < 0.4) {
+    } else if (intent.impact === 'negative' && currentSeverity < 0.4) {
       strategyBonus = -0.2; // Penalty for being too lenient with negative response
     } else {
       strategyBonus = 0.1; // Bonus for appropriate strategy

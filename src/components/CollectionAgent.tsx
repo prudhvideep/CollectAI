@@ -63,7 +63,7 @@ export default function RLCollectionAgent() {
     const newIntent: Intent = {
       id: Date.now().toString(),
       name: "",
-      type: "Positive",
+      impact: "positive",
       description: "",
       value: 0,
     };
@@ -86,7 +86,24 @@ export default function RLCollectionAgent() {
     );
   };
 
-  const startSession = () => {
+  const startSession = async () => {
+    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/configure_intents`, {
+      'method' : "POST",
+      'headers' : {
+        'Content-Type' : "application/json",
+      },
+      'body' : JSON.stringify({
+        "intents" : [
+          ...intents.map(({id,value,...rest}) => (rest))
+        ]
+      })
+    });
+
+    if(!response.ok) {
+      alert("Request to configure intents failed");
+      return;
+    }
+
     if (parameters.length === 0 || intents.length === 0) {
       alert(
         "Please add at least one parameter and one intent before starting."
@@ -97,7 +114,7 @@ export default function RLCollectionAgent() {
     const agent = new RLAgent(parameters, intents);
     setRlAgent(agent);
     setSessionStarted(true);
-
+    
     setMessages([
       {
         id: Date.now().toString(),
@@ -107,6 +124,8 @@ export default function RLCollectionAgent() {
         } (State: ${agent.currentState})`,
       },
     ]);
+
+    await 
 
     // Generate initial bot message
     setTimeout(() => {
@@ -161,7 +180,7 @@ export default function RLCollectionAgent() {
             id: Date.now().toString(),
             type: "system",
             content: `Intent: ${result.detectedIntent.name} (${
-              result.detectedIntent.type
+              result.detectedIntent.impact
             }) | Confidence: ${(result.detectedIntent.confidence * 100).toFixed(
               1
             )}% | Reward: ${result.reward.toFixed(
@@ -393,22 +412,22 @@ export default function RLCollectionAgent() {
                             className="w-20 px-3 py-1.5 text-sm border-2 border-orange-200 rounded-lg bg-white/80 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-200 transition-all"
                           />
                           <select
-                            value={intent.type}
+                            value={intent.impact}
                             onChange={(e) =>
                               updateIntent(
                                 intent.id,
-                                "type",
+                                "impact",
                                 e.target.value as
-                                  | "Positive"
-                                  | "Negative"
-                                  | "Neutral"
+                                  | "positive"
+                                  | "negative"
+                                  | "neutral"
                               )
                             }
                             className="flex-1 px-3 py-1.5 text-sm border-2 border-orange-200 rounded-lg bg-white/80 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-200 transition-all"
                           >
-                            <option value="Positive">Positive</option>
-                            <option value="Negative">Negative</option>
-                            <option value="Neutral">Neutral</option>
+                            <option value="positive">Positive</option>
+                            <option value="negative">Negative</option>
+                            <option value="neutral">Neutral</option>
                           </select>
                         </div>
 

@@ -58,29 +58,25 @@ const useBotStoreBase = create<BotState>((set) => ({
     {
       id: "1",
       name: "Immediate Payment",
-      type: "Positive",
-      description: "Customer commits to paying immediately",
+      impact: "positive",
+      description:
+        "Customer expresses a clear willingness to pay immediately, confirming that they have the funds available and intend to settle the outstanding amount without delay. May include statements like 'I will pay right now' or 'I can transfer today.'",
       value: 1.0,
     },
     {
       id: "2",
-      name: "Promise to Pay",
-      type: "Positive",
-      description: "Customer makes specific commitment to pay later",
-      value: 0.8,
-    },
-    {
-      id: "3",
       name: "Financial Hardship",
-      type: "Negative",
-      description: "Customer explains financial difficulties",
+      impact: "negative",
+      description:
+        "Customer explains difficulties in meeting the payment due to financial constraints, such as unexpected expenses, low cash flow, or personal hardships. Typical statements include 'I am facing financial difficulties' or 'I cannot pay now because of other obligations.' This signals potential delay or partial payment.",
       value: -0.5,
     },
     {
-      id: "4",
+      id: "3",
       name: "Refusal to Pay",
-      type: "Negative",
-      description: "Customer refuses to pay",
+      impact: "negative",
+      description:
+        "Customer explicitly refuses to pay or denies responsibility for the payment. May include statements like 'I will not pay,' 'This is not my obligation,' or 'I refuse to settle this bill.' Indicates strong negative impact and requires escalation or alternative resolution.",
       value: -1.0,
     },
   ],
