@@ -366,7 +366,7 @@ export class RLAgent {
   /**
    * Generate response based on current strategy
    */
-  public generateResponse(intent: Intent, strategy: string): string {
+  public generateResponse(_: Intent, strategy: string): string {
     const responses: Record<string, string[]> = {
       "Friendly Reminder": [
         "Thank you for your response. We understand your situation and want to help find a solution.",
